@@ -1,7 +1,7 @@
 import { Middleware } from "../types";
 
-export const error: Middleware = (payload, next) =>
+export const error: Middleware = (context, next) =>
   next().then(
     (result) => result,
-    (e) => [Error(e as string), null, { payload, response: null }]
+    (e) => [Error(e as string), null, { context, response: null }]
   );
