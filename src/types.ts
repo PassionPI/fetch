@@ -47,4 +47,4 @@ export type ResultWithAbort<R> = Result<R> & {
   abort: () => void;
 };
 
-export type Middleware = OnionLayer<Context, Result<object>>;
+export type Middleware = OnionLayer<Context, Result<BaseResponse>>;
