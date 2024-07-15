@@ -4,6 +4,7 @@ export { jwt } from "./middleware/jwt";
 export { wait } from "./middleware/wait";
 
 export type {
+  BaseResponse,
   Context,
   Middleware,
   Payload,
