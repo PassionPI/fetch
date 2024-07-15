@@ -4,6 +4,8 @@ type Body = Record<string, unknown> | RequestInit["body"];
 
 export type Prime = string | number | boolean | null | undefined;
 
+export type BaseResponse = object | Prime;
+
 export type Payload = Omit<RequestInit, "body"> & {
   /** input */
   url: string;
