@@ -20,7 +20,7 @@ export const parseBody = ({ body, headers }: Context) => {
 
 export const parseContent = (response: Response) => {
   const clone = response.clone();
-  const headers = new Headers(response.headers);
+  const headers = response.headers;
 
   if (typeJSON(headers)) {
     return clone.json();
