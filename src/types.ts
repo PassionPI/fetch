@@ -14,10 +14,12 @@ export type Payload = Omit<RequestInit, "body"> & {
   body?: Body;
 };
 
-export type Context = Omit<RequestInit, "headers" | "body"> & {
+export type Context = Omit<RequestInit, "body" | "headers"> & {
+  /** input */
   url: URL;
-  headers: Headers;
+  /** request init */
   body?: Body;
+  headers: Headers;
 };
 
 export type Result<R> = Promise<
