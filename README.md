@@ -80,8 +80,11 @@ const getData: Middleware = async (context, next) => {
   if (err) {
     return [err, null, meta];
   }
-  // if you want to get `data` field in response value
-  return [null, Reflect.get(val, "data"), meta];
+  if (typeof val == "object") {
+    // if you want to get `data` field in response value
+    return [null, Reflect.get(val || {}, "data"), meta];
+  }
+  return [null, val, meta];
 };
 const getBlob: Middleware = async (context, next) => {
   const { headers } = context;

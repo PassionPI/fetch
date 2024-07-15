@@ -1,10 +1,10 @@
 import { onion } from "@passion_pi/fp";
 import { error } from "./middleware/error";
-import { Context, Middleware, Payload, Result, ResultWithAbort } from "./types";
+import { BaseResponse, Context, Middleware, Payload, Result, ResultWithAbort } from "./types";
 import { parseBody, parseContent } from "./util/content";
 import { createContext } from "./util/context";
 
-const baseFetch = async <R>(context: Context): Result<R> => {
+const baseFetch = async <R extends BaseResponse>(context: Context): Result<R> => {
   const { url, body, ...init } = context ?? {};
 
   const request = new Request(url, {
@@ -42,7 +42,7 @@ const baseFetch = async <R>(context: Context): Result<R> => {
 export const createFetch = (...mids: Array<Middleware>) => {
   const middlewares = [error, ...mids];
 
-  return <R extends object>(payload: Payload): ResultWithAbort<R> => {
+  return <R extends BaseResponse>(payload: Payload): ResultWithAbort<R> => {
     const controller = new AbortController();
     const responding = onion(middlewares, (context) => {
       return baseFetch<R>({

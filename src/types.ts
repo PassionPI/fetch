@@ -4,6 +4,8 @@ type Body = Record<string, unknown> | RequestInit["body"];
 
 export type Prime = string | number | boolean | null | undefined;
 
+export type BaseResponse = object | Prime;
+
 export type Payload = Omit<RequestInit, "body"> & {
   /** input */
   url: string;
@@ -14,10 +16,12 @@ export type Payload = Omit<RequestInit, "body"> & {
   body?: Body;
 };
 
-export type Context = Omit<RequestInit, "headers" | "body"> & {
+export type Context = Omit<RequestInit, "body" | "headers"> & {
+  /** input */
   url: URL;
-  headers: Headers;
+  /** request init */
   body?: Body;
+  headers: Headers;
 };
 
 export type Result<R> = Promise<
@@ -43,4 +47,4 @@ export type ResultWithAbort<R> = Result<R> & {
   abort: () => void;
 };
 
-export type Middleware = OnionLayer<Context, Result<object>>;
+export type Middleware = OnionLayer<Context, Result<BaseResponse>>;
