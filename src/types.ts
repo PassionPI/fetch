@@ -1,6 +1,6 @@
 import { OnionLayer } from "@passion_pi/fp";
 
-type Body = Record<string, unknown> | RequestInit["body"];
+type Body = Record<string, unknown> | Array<unknown> | RequestInit["body"];
 
 export type Prime = string | number | boolean | null | undefined;
 
