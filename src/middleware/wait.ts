@@ -3,13 +3,13 @@ import { Middleware } from "../types";
 export const wait =
   ({
     until,
-    whiteList,
+    pathWhiteList,
   }: {
     until: () => Promise<void>;
-    whiteList?: string[];
+    pathWhiteList?: string[];
   }): Middleware =>
   async (context, next) => {
-    if (!whiteList?.includes?.(context.url.pathname)) {
+    if (!pathWhiteList?.includes?.(context.url.pathname)) {
       await until();
     }
 

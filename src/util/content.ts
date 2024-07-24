@@ -1,5 +1,7 @@
 import { Context } from "@/types";
 
+export const isFn = (fn: unknown): fn is Function => typeof fn === "function";
+
 const typeJSON = (headers: Headers) =>
   String(headers.get("Content-Type")).includes("application/json");
 
