@@ -1,10 +1,19 @@
 import { onion } from "@passion_pi/fp";
 import { error } from "./middleware/error";
-import { BaseResponse, Context, Middleware, Payload, Result, ResultWithAbort } from "./types";
+import {
+  BaseResponse,
+  Context,
+  Middleware,
+  Payload,
+  Result,
+  ResultWithAbort,
+} from "./types";
 import { parseBody, parseContent } from "./util/content";
 import { createContext } from "./util/context";
 
-const baseFetch = async <R extends BaseResponse>(context: Context): Result<R> => {
+const baseFetch = async <R extends BaseResponse>(
+  context: Context
+): Result<R> => {
   const { url, body, ...init } = context ?? {};
 
   const request = new Request(url, {
