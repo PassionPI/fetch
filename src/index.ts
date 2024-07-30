@@ -1,4 +1,5 @@
 export { createFetch } from "./core";
+export { error } from "./middleware/error";
 export { json } from "./middleware/json";
 export { jwt } from "./middleware/jwt";
 export { downloadProgress, uploadProgress } from "./middleware/progress";

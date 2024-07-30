@@ -94,7 +94,6 @@ const getBlob: Middleware = async (context, next) => {
     return [err, null, meta];
   }
   if (headers.get("responseType") === "blob") {
-    // don't care about `blob()` error, just return it, error is auto handled.
     return [null, await meta.response.clone().blob(), meta];
   }
   return [null, val, meta];

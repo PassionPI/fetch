@@ -19,7 +19,7 @@ interface BasePayload {
 
 export type Prime = string | number | boolean | null | undefined;
 
-export type BaseResponse = unknown | object | Prime;
+export type BaseResponse = object | Prime | void;
 
 export type Payload = BasePayload &
   Omit<RequestInit, "body"> & {
