@@ -1,5 +1,4 @@
 import { onion } from "@passion_pi/fp";
-import { error } from "./middleware/error";
 import {
   BaseResponse,
   Context,
@@ -48,9 +47,7 @@ const baseFetch = async <R extends BaseResponse>(
   return [null, value, meta];
 };
 
-export const createFetch = (...mids: Array<Middleware>) => {
-  const middlewares = [error, ...mids];
-
+export const createFetch = (...middlewares: Array<Middleware>) => {
   return <R extends BaseResponse>(payload: Payload): ResultWithAbort<R> => {
     const controller = new AbortController();
     const responding = onion(middlewares, (context) => {
