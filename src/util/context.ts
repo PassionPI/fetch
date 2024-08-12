@@ -8,7 +8,7 @@ export const createContext = ({
   headers,
   ...rest
 }: Payload): Context => {
-  const input = new URL(url, self.location.origin);
+  const input = new URL(url, globalThis.location.origin);
 
   if (search) {
     input.search = new URLSearchParams(parseSearch(search)).toString();
