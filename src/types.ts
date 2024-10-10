@@ -5,6 +5,7 @@ type Body = Record<string, any> | Array<any> | RequestInit["body"];
 type Progress = { total: number; length: number; progress: number };
 
 interface BasePayload {
+  config?: object;
   download?: {
     onProgress: (progress: Progress) => void;
     onDone: (value: Uint8Array) => void;
