@@ -1,4 +1,6 @@
 import { onion } from "@passion_pi/fp";
+import { error } from "./middleware/error";
+import { downloadProgress, uploadProgress } from "./middleware/progress";
 import {
   BaseResponse,
   Context,
@@ -10,8 +12,11 @@ import {
 import { parseBody, parseContent } from "./util/content";
 import { createContext } from "./util/context";
 
-const baseFetch = async <R extends BaseResponse>(
-  context: Context
+const baseFetch = async <
+  R extends BaseResponse,
+  Options extends object = object
+>(
+  context: Context<Options>
 ): Result<R> => {
   const { url, body, ...init } = context ?? {};
 
@@ -47,15 +52,28 @@ const baseFetch = async <R extends BaseResponse>(
   return [null, value, meta];
 };
 
-export const createFetch = (...middlewares: Array<Middleware>) => {
-  return <R extends BaseResponse>(payload: Payload): ResultWithAbort<R> => {
+export const createFetch = <Options extends object = object>(
+  ...middlewares: Array<Middleware<Options>>
+) => {
+  const middleware = [
+    error,
+    downloadProgress(),
+    uploadProgress(),
+    ...middlewares,
+  ] as Array<Middleware<Options>>;
+  return <R extends BaseResponse>(
+    payload: Payload<Options>
+  ): ResultWithAbort<R, Options> => {
     const controller = new AbortController();
-    const responding = onion(middlewares, (context) => {
+    const responding = onion(...middleware, ((context) => {
       return baseFetch<R>({
         ...context,
         signal: controller.signal,
       });
-    })(createContext(payload)) as ResultWithAbort<R>;
+    }) as Middleware<Options>)(createContext(payload)) as ResultWithAbort<
+      R,
+      Options
+    >;
     responding.abort = () => controller.abort();
     return responding;
   };
