@@ -4,7 +4,8 @@ type Body = Record<string, any> | Array<any> | RequestInit["body"];
 
 type Progress = { total: number; length: number; progress: number };
 
-interface BasePayload {
+interface BasePayload<Options extends object = object> {
+  options?: Options;
   download?: {
     onProgress: (progress: Progress) => void;
     onDone: (value: Uint8Array) => void;
@@ -21,7 +22,7 @@ export type Prime = string | number | boolean | null | undefined;
 
 export type BaseResponse = object | Prime | void;
 
-export type Payload = BasePayload &
+export type Payload<Options extends object = object> = BasePayload<Options> &
   Omit<RequestInit, "body"> & {
     /** input */
     url: string;
@@ -32,7 +33,7 @@ export type Payload = BasePayload &
     body?: Body;
   };
 
-export type Context = BasePayload &
+export type Context<Options extends object = object> = BasePayload<Options> &
   Omit<RequestInit, "body" | "headers"> & {
     /** input */
     url: URL;
@@ -41,12 +42,12 @@ export type Context = BasePayload &
     headers: Headers;
   };
 
-export type Result<R> = Promise<
+export type Result<R, Options extends object = object> = Promise<
   | [
       error: Error,
       value: null,
       meta: {
-        context: Context;
+        context: Context<Options>;
         response: Response | null;
       }
     ]
@@ -54,14 +55,20 @@ export type Result<R> = Promise<
       error: null,
       value: R,
       meta: {
-        context: Context;
+        context: Context<Options>;
         response: Response;
       }
     ]
 >;
 
-export type ResultWithAbort<R> = Result<R> & {
+export type ResultWithAbort<R, Options extends object = object> = Result<
+  R,
+  Options
+> & {
   abort: () => void;
 };
 
-export type Middleware = OnionLayer<Context, Result<BaseResponse>>;
+export type Middleware<Options extends object = object> = OnionLayer<
+  Context<Options>,
+  Result<BaseResponse, Options>
+>;

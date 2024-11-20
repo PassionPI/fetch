@@ -1,13 +1,13 @@
 import { Context, Payload } from "@/types";
 import { parseSearch } from "./search";
 
-export const createContext = ({
+export const createContext = <Options extends object = object>({
   url,
   search,
   method,
   headers,
   ...rest
-}: Payload): Context => {
+}: Payload<Options>): Context<Options> => {
   const input = new URL(url, globalThis.location.origin);
 
   if (search) {
