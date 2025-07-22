@@ -75,6 +75,10 @@ export const createFetch = <Options extends object = object>(
       Options
     >;
     responding.abort = () => controller.abort();
+    responding.unwrap = () =>
+      responding.then(([error, value]) =>
+        error ? Promise.reject(error) : value
+      );
     return responding;
   };
 };

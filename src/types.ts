@@ -5,7 +5,7 @@ type Body = Record<string, any> | Array<any> | RequestInit["body"];
 type Progress = { total: number; length: number; progress: number };
 
 interface BasePayload<Options extends object = object> {
-  options?: Options;
+  options?: Partial<Options>;
   download?: {
     onProgress: (progress: Progress) => void;
     onDone: (value: Uint8Array) => void;
@@ -66,6 +66,7 @@ export type ResultWithAbort<R, Options extends object = object> = Result<
   Options
 > & {
   abort: () => void;
+  unwrap: () => Promise<R>;
 };
 
 export type Middleware<Options extends object = object> = OnionLayer<
