@@ -50,7 +50,7 @@ export const downloadProgress = (): Middleware => async (context, next) => {
 
   const { response } = meta;
 
-  if (response.body) {
+  if (response && response.body) {
     const { download } = context;
     const { onProgress, onDone, onError } = download || {};
     const reader = response.clone().body.getReader();
