@@ -57,10 +57,6 @@ export const downloadProgress = (): Middleware => async (context, next) => {
 
     if (total && isFn(onProgress)) {
       const reader = response?.clone?.()?.body?.getReader?.();
-
-      if (!reader) {
-        return
-      }
       
       let length = 0;
       let progress = 0;
@@ -70,7 +66,7 @@ export const downloadProgress = (): Middleware => async (context, next) => {
       process();
 
       function process() {
-        reader.read().then(({ done, value }) => {
+        reader?.read().then(({ done, value }) => {
           if (!done) {
             length += value.length;
             progress = length / total;
