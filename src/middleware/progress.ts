@@ -50,13 +50,18 @@ export const downloadProgress = (): Middleware => async (context, next) => {
 
   const { response } = meta;
 
-  if (response && response?.body) {
+  if (response?.body) {
     const { download } = context;
     const { onProgress, onDone, onError } = download || {};
-    const reader = response.clone().body.getReader();
     const total = Number(response.headers.get("Content-Length"));
 
     if (total && isFn(onProgress)) {
+      const reader = response?.clone?.()?.body?.getReader?.();
+
+      if (!reader) {
+        return
+      }
+      
       let length = 0;
       let progress = 0;
 
